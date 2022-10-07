@@ -1,0 +1,2 @@
+data ← ∊⊃⎕NGET 'C:\Users\randy\Documents\GitHub\APL\ProjectEuler\Problem8\data.txt'1
+{⊃⊖(⊂∘⍋⌷⊢)×/¨10(⊥⍣¯1)¨⍵}m←⍎¨{⊂⍤⊢⌺13⊢⍵}data

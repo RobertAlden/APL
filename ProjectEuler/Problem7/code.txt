@@ -1,0 +1,13 @@
+{⍺←2⋄⍵<≢⍺:⍵⊃⍺⋄p←{0=+⌿0=⍵|⍨1↓⍳⌈⍵*.5:⍵ ⋄ ∇ 1+⍵}1+⊃⊖⍺⋄(⍺,p)∇ ⍵}10001
+
+/* Expanded view:
+{
+	⍺←2 // Start at 2, the first prime.
+	⍵<≢⍺:⍵⊃⍺ // If the length of ⍺ is > ⍵, return the ⍵th term of ⍺.
+	p←{	
+		0=+⌿0=⍵|⍨1↓⍳⌈⍵*.5:⍵ // if there are no factors between 2..⍵^.5, ⍵ must be prime
+		∇1+⍵ 				 // if ⍵ is not prime, increment ⍵ by one and recurse until a prime is found.
+	   }	1+⊃⊖⍺	// increment the last term of ⍺ and calculate the next prime equal to ⍺+1 or higher. 
+
+	(⍺,p)∇ ⍵}	10001 // accumulate the sequence of primes until it is of length ⍵.
+*/
