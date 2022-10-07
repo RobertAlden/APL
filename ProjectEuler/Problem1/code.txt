@@ -1,1 +1,19 @@
+/* 
+Problem 1:
+	If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
+
+	Find the sum of all the multiples of 3 or 5 below 1000.
+*/
+
+// Code:
 3 5{+⌿⍸∨⌿0=⍺∘.|⍳⍵}999
+
+
+/* Explanation (read bottom up.)
+
+	3 5
+	{+⌿⍸	 // coverts the resulting boolean mask to their ordinal value and sums them together.
+	∨⌿0= // Takes that matrix and creates a boolean matrix of each multiple of ⍺ as 1, and performs an or-wise reduction on the matrix to create a vector of all multiples of the elements of ⍺
+	⍺∘.|⍳⍵} // Creates a matrix of remainders of each ⍺ for 1 to ⍵ of shape ⍺×⍵.
+	999 
+*/

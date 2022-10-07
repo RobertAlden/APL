@@ -1,1 +1,14 @@
+/*
+Problem 5:
+	2520 is the smallest number that can be divided by each of the numbers from 1 to 10 without any remainder.
+
+	What is the smallest positive number that is evenly divisible by all of the numbers from 1 to 20?
+*/
+
+// Code:
 ∧/⍳20
+
+
+/* Explanation:
+	∧/⍳20 // ∧ is the LCM function, doing an LCM reduction across the range of 1..20 will produce the LCM for all values
+*/

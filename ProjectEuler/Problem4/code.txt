@@ -1,1 +1,18 @@
-{⌈/⍵/⍨∧/¨(⌽=⊢)¨(10⊥⍣¯1⊢)¨⍵}∪∊∘.×⍨99↓⍳999
+/*
+Problem 4:
+	A palindromic number reads the same both ways. The largest palindrome made from the product of two 2-digit numbers is 9009 = 91 × 99.
+
+	Find the largest palindrome made from the product of two 3-digit numbers.
+*/
+
+//Code:
+{⌈/⍵/⍨(⌽≡⊢)¨(10⊥⍣¯1⊢)¨⍵}∪∊∘.×⍨99↓⍳999
+
+/* Explanation: (bottom up)
+{⌈/⍵/⍨ 			// Reduce the vector of product by the boolean vector and find the maximum scalar
+(⌽≡⊢)¨ 		// And find if each vector is equivalent to its reverse and generate a boolean vector
+(10⊥⍣¯1⊢)¨⍵}  // Turn each scalar product into a vector of its digits (magic inverse, yay!)
+∪∊∘.×⍨ 		   // Generate a vector of all unique products in this range
+99↓⍳999 		   // For 100 to 999:
+
+*/

@@ -1,1 +1,19 @@
+/*
+Problem 3:
+	The prime factors of 13195 are 5, 7, 13 and 29.
+
+	What is the largest prime factor of the number 600851475143 ?
+*/
+
+//Code
 {⌈/_/⍨{2=+⌿0=⍵|⍨⍳⍵}¨_←⍸0=⍵|⍨⍳⌈⍵*0.5} 600851475143
+
+/*
+Explanation: (read bottom up)
+{⌈/_/⍨			  // Filter the factors by that boolean vector and find the largest remaining factor.
+{2=+⌿0=⍵|⍨⍳⍵}¨   // Test each factor for primality, and generate a boolean vector from the results
+_←⍸0=⍵|⍨⍳⌈⍵*0.5} // Generate a list of factors from 1 to sqrt(⍵) and store as _
+600851475143
+
+
+*/
