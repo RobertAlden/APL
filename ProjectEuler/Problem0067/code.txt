@@ -1,2 +1,2 @@
-data←⍎¨⊃⎕NGET'C:\Users\randy\Documents\GitHub\APL\ProjectEuler\Problem67\p067_triangle.txt' 1
+data←⍎¨⊃⎕NGET'.\Problem0067\p067_triangle.txt' 1
 {1=≢⍵:⊃⊃⍵⋄∇⌽((⊂2(⌈/)⊃⌽⍵)+(⊂2⊃⌽⍵)),(2↓⌽⍵)} data

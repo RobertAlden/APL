@@ -1,1 +1,20 @@
+/*
+Problem 10
+    The sum of the primes below 10 is 2 + 3 + 5 + 7 = 17.
+
+    Find the sum of all the primes below two million.
+*/
+
+// Code
 {⍺←1↓⍳⍵ ⋄ 0=≢⍺:+/1↓⍵ ⋄ ({/⍨∘(~0=⊃|⊢)⍨⍵}⍺)∇ ⍵,⊃⍺}2000000
+
+
+/* Explanation: This is a recursive implementation of the Sieve of Eratosthenes
+{⍺←1↓⍳⍵ ⋄       // Initialize ⍺ to 2..⍵
+0=≢⍺:+/1↓⍵ ⋄   // If ⍺ is an empty vector, return ⍵
+    ({/⍨∘(~0=⊃|⊢)⍨⍵}⍺) // Given a vector of scalars, returns a new vector in which the first element, and all multiples of said element have been removed.
+    ∇  // Recurses using the new vector, and accumulating primes in ⍵.
+    ⍵,⊃⍺} // Appends the first element of ⍺ to ⍵, which will be a prime number as per the Sieve's algorithm.
+2000000
+
+*/
