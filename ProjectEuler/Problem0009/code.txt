@@ -22,8 +22,8 @@ a←⍺ ⋄          // Stores ⍺ as a to allow inner loop access to the value
     
     _←(⍺+1)         // Inner recursive function begins, _ captures result of function, may return either scalar, indicating failure to find a triple, or a vector of length 3, the triple desired
     {⍺=(⍵-1+a):⍺ ⋄ // If ⍺ reaches limit, halt and return ⍺
-     b←⍺ ⋄ 
-     c←⍵-a+b ⋄ 
+     b←⍺ ⋄         // assignment for clarity
+     c←⍵-a+b ⋄     // c must be the remainder left from a and b
      (c×c)=(a×a)+(b×b):a b c ⋄ // if a^2 + b^2 = c^2, then return a b c
      (⍺+1)∇ ⍵}                // Iterates ⍺ by 1 every execution
      ⍵ ⋄ 
