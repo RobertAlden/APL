@@ -1,0 +1,28 @@
+/*
+Problem 11
+	In the 20×20 grid (data.txt), four numbers along a diagonal line have been marked in red.
+
+	The product of these numbers is 26 × 63 × 78 × 14 = 1788696.
+
+	What is the greatest product of four adjacent numbers in the same direction (up, down, left, right, or diagonally) in the 20×20 grid?
+*/
+
+// Code 
+data←↑⍎¨⊃⎕NGET'.\Problem0011\data.txt'1
+ ⌈/,×/¨{(∊0≠⍵)/(∊⍵)}¨{a←4 4⍴4 12/1 0 ⋄ b←∘.=⍨⍳4 ⋄ ((⊂b), (⊂⌽b),(⊂a),(⊂⍉a))∘.×({⊂⍵}⌺4 4)⍵}data
+
+
+/* Explanation:
+data←↑⍎¨⊃⎕NGET'.\Problem0011\data.txt'1
+
+⌈/,×/¨{(∊0≠⍵)/(∊⍵)}¨ // Extract all non zeros from the matricies, find the products and find the maximum	   <-
+	{																											 |
+	a←4 4⍴4 12/1 0 ⋄ 			// Constructs a 4x4 matrix in which the top row is all 1's and stores it as a    |
+	b←∘.=⍨⍳4 ⋄ 					// Constructs a 4x4 identity matrix, stored as b 								 |
+	((⊂b), (⊂⌽b), (⊂a),(⊂⍉a)) // uses a and b to construct an array of each cardinal direction of 1's			 |
+	∘.×							// outer product multiply sets all extraneous values in the matrix to zero. ------ 
+	({⊂⍵}⌺4 4)⍵ 				// creates an array of 4x4 windows of ⍵.
+	}
+data
+
+*/
