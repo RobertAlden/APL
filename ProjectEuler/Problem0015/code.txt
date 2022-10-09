@@ -1,0 +1,17 @@
+/*
+Problem 15
+	Starting in the top left corner of a 2×2 grid, and only being able to move to the right and down, there are exactly 6 routes to the bottom right corner.
+	How many such routes are there through a 20×20 grid?
+*/
+
+//Code
+{((⌈2÷⍨≢)⊃⊢)∊¯1↑⍉∘.!⍨0,⍳⍵×2}20
+
+/* Explanation:
+
+{((⌈2÷⍨≢)⊃⊢)∊  // Since this term will always be an odd length, and we want the middle term, divide the length by two and round up and extract that value from the vector.
+¯1↑⍉		    // Extracts the ⍵th term,
+⍉∘.!⍨0,⍳⍵×2}    // Generates a pascal triangle ⍵*2 terms high
+20
+
+*/
