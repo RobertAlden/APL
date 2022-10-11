@@ -1,0 +1,20 @@
+/*
+Problem 13
+	Work out the first ten digits of the sum of the following one-hundred 50-digit numbers.
+	see data.txt
+*/
+
+
+// Code
+10{(⌽10*(1-⍨⍳⍺))+.×⍺↑10⊥⍣¯1+/⍵}data
+
+/* Explanation:
+10
+{
+	(⌽10*(1-⍨⍳⍺)) // generate the powers of 10 from 0 to ⍺-1
+	+.×  // Multiplies the digits with their respective power of ten and then sums all values.
+	⍺↑10⊥⍣¯1+/⍵ //Extracts the first ⍺ digits of the sum of ⍵
+}
+data
+
+*/
