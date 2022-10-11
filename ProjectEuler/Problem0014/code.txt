@@ -1,0 +1,32 @@
+/*
+Problem 14:
+    The following iterative sequence is defined for the set of positive integers:
+
+    n → n/2 (n is even)
+    n → 3n + 1 (n is odd)
+
+    Using the rule above and starting with 13, we generate the following sequence:
+
+    13 → 40 → 20 → 10 → 5 → 16 → 8 → 4 → 2 → 1
+    It can be seen that this sequence (starting at 13 and finishing at 1) contains 10 terms. Although it has not been proved yet (Collatz Problem), it is thought that all starting numbers finish at 1.
+
+    Which starting number, under one million, produces the longest chain?
+
+    NOTE: Once the chain starts the terms are allowed to go above one million.
+*/
+
+//Code
+(⊢⍳(⌈/)){⍺←1⋄ 1=⍵:⍺ ⋄ 0=1|2⍟⍵:⍺+2⍟⍵ ⋄ 0=2|⍵:(⍺+1)∇(⍵÷2) ⋄ 0≠2|⍵:(⍺+2)∇(2÷⍨1+3×⍵)}¨⍳1000000
+
+
+/* Explanation:
+(⊢⍳(⌈/)) // Returns the index of the maximum value which is the starting number
+{
+    ⍺←1 ⋄                  //⍺ is the value storing chain length
+    1=⍵:⍺ ⋄               // if ⍵ = 1, return ⍺
+    0=1|2⍟⍵:⍺+2⍟⍵ ⋄     //if ⍵ is a power of two, skip all calculations as it is just ⍺ + log2(⍵)
+    0=2|⍵:(⍺+1)∇(⍵÷2) ⋄ // if ⍵ is even, recurse with ⍵÷2
+    0≠2|⍵:(⍺+2)∇(2÷⍨1+3×⍵) // if ⍵ is odd, skip ahead one step by dividing by two, as if ⍵ is odd, 1+3×⍵ will always be even, and we can advance past that by incorporating the ÷2
+}
+¨⍳1000000 // For each value from 1..1000000
+*/
