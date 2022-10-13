@@ -1,0 +1,22 @@
+/*
+Problem 16:
+	2^15 = 32768 and the sum of its digits is 3 + 2 + 7 + 6 + 8 = 26.
+	What is the sum of the digits of the number 2^1000?
+
+*/
+
+//Code
+1000{1=⍺:+/⌽⍵⋄(⍺-1)∇(+⌿(((-⊢>⍳)⊃∘⍴∘⊢)⌽⊢)0⍪(10⊥⍣¯1⊢)2×0,⍨⍵)}2
+
+/* Explanation
+1000
+{
+1=⍺: 			//Stop when ⍺=1, 
+	+/⌽⍵ ⋄     // Reverse ⍵ and find the sum of digits
+	(⍺-1)∇		// Recurse decrementing ⍺⌈
+	(+⌿(((-⊢>⍳)⊃∘⍴∘⊢)⌽⊢) // shifts the matrix except for the ones column, simulating a carry, and sum reduces it back into a vector of digits
+	0⍪(10⊥⍣¯1⊢)2×0,⍨⍵) // Takes a vector of digits of a number, and doubles each digit, and turns it into a matrix
+						// of resulting digits of each product
+}
+2
+*/
