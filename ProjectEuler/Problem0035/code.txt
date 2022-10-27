@@ -1,0 +1,35 @@
+/*
+Problem 35
+	The number, 197, is called a circular prime because all rotations of the digits: 197, 971, and 719, are themselves prime.
+
+	There are thirteen such primes below 100: 2, 3, 5, 7, 11, 13, 17, 31, 37, 71, 73, 79, and 97.
+
+	How many circular primes are there below one million?
+*/
+
+//Code
+problem35←{
+     primes←{⍺←1↓⍳⍵ ⋄ 0=≢⍺:1↓⍵ ⋄ ({/⍨∘(~0=⊃|⊢)⍨⍵}⍺)∇ ⍵,⊃⍺}⍵
+     mask←~∨⌿∨⌿('024568')∘.∊⍉⍕⍪primes
+     filtered_primes←2,3,5,1↓mask/primes
+     digits←⍉⍕⍪filtered_primes
+     rotations←↑{{⍎⍵(∩,~)' '}⍤1⊢⍉⍵}¨{(⍳⊃⍴⍵)∘.⊖⊂⍵}digits
+     mask2←∧⌿rotations∊primes
+     ≢mask2/filtered_primes
+}
+problem35 1000000
+
+
+/* Explanation
+problem35←{
+     primes←{⍺←1↓⍳⍵ ⋄ 0=≢⍺:1↓⍵ ⋄ ({/⍨∘(~0=⊃|⊢)⍨⍵}⍺)∇ ⍵,⊃⍺}⍵ 		//Sieve of Eratosthenes
+     mask←~∨⌿∨⌿('024568')∘.∊⍉⍕⍪primes									//mask off primes that could never satisfy having all rotations being primes by filtering their even digit characters
+     filtered_primes←2,3,5,1↓mask/primes 		// Re-add the primes that were caught in the crossfire
+     digits←⍉⍕⍪filtered_primes 					//Convert the vector of filtered primes into a character matrix
+     rotations←↑{{⍎⍵(∩,~)' '}⍤1⊢⍉⍵}¨{(⍳⊃⍴⍵)∘.⊖⊂⍵}digits //Creates all rotations of the character matrix and fix spaces at the front, then turn them back into digits
+     mask2←∧⌿rotations∊primes // Create a boolean mask for each number where 1 means if all rotations are prime 
+     ≢mask2/filtered_primes // Find the size of the remaining filtered primes after applying the mask
+}
+problem35 1000000
+
+*/

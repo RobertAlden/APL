@@ -17,8 +17,17 @@
 // Code
 problem47←{
     range←⍳⍵
-     primes←{⍺←1↓⍳⍵ ⋄ 0=≢⍺:1↓⍵ ⋄ ({/⍨∘(~0=⊃|⊢)⍨⍵}⍺)∇ ⍵,⊃⍺}⌈⍵*0.65
-     result←+⌿0=primes∘.|range
-     ⊃⍸result⍷⍨(⍺⌿⍺)
- }
- 4 problem47 150000
+    primes←{⍺←1↓⍳⍵ ⋄ 0=≢⍺:1↓⍵ ⋄ ({/⍨∘(~0=⊃|⊢)⍨⍵}⍺)∇ ⍵,⊃⍺}⌈⍵*0.65
+    result←+⌿0=primes∘.|range
+    ⊃⍸result⍷⍨(⍺⌿⍺)
+}
+4 problem47 150000
+
+/* Explanation:
+    problem47←{
+        range←⍳⍵        // Create a range of numbers
+        primes←{⍺←1↓⍳⍵ ⋄ 0=≢⍺:1↓⍵ ⋄ ({/⍨∘(~0=⊃|⊢)⍨⍵}⍺)∇ ⍵,⊃⍺}⌈⍵*0.65 // Create a sufficently large number of primes
+        result←+⌿0=primes∘.|range //Take the columnar sum reduction of the outer product modulus equality 0 between the range and primes which will produce the number of prime factors for each number in the range
+        ⊃⍸result⍷⍨(⍺⌿⍺) // search the list for the pattern of consectutive values and return the earlier occurance.
+    }
+*/
