@@ -1,0 +1,33 @@
+dbLoad←{
+     filename←⊃⍵
+     ⎕NEXISTS filename:' '(≠⊆⊢)¨⊃⎕NGET filename 1 ⍝ If it exists, parse and return the data
+     ⊂(2⊃⍵),' ',(3⊃⍵) ⍝ If it doesn't, parse the args as the headers of a new DB
+}
+main←{
+     h d←(1↑⍺)(1↓⍺) ⍝ splits package into header and data
+     d←(⊂∘⍋⌷⊢)d ⍝ sorts data, even across multiple fields (so cool)
+     ⎕←⊃h  ⍝ display headers
+     num_of_entries←⌊/(≢d),10,(⍵-1)-⍨≢d ⍝ find how many entries to display
+     _←(⍵+1-⍨⍳num_of_entries){⎕←⍺,⍵}¨num_of_entries↑(⍵-1)↓d ⍝ display them with their index
+     input←' '(≠⊆⊢)∊⍞ ⍝ get user input
+     cmd←⊃input ⍝ parse the command from the args
+     ⎕←⊂cmd
+     args←{(30⌊≢⍵)↑⍵}¨1↓input
+     ⍝ most commands involve recursion to being next opertion, except quitting
+     ⍝ The bit before the : allows for more then one alias per command
+     (⊂cmd)∊((,'q')'quit' 'exit'):{∊((1↑⍵),' ',(1↓⍵))}¨(h,d) ⍝ if quitting, repackage and return data for writing to file
+     (⊂cmd)∊((,'a')'add'):(h,({⎕←∊(⊂'Added'),' ',¨⍵ ⋄ d,⊂⍵}args))∇ ⍵ ⍝ if adding, append new entry, will be sorted into place next iteration
+     (⊂cmd)∊((,'u')'update'):(h,({⎕←'Updated' ⋄ (⊂1↓⍵)@(⍎⊃⍵)⊢d}args))∇ ⍵ ⍝ update entry at index
+     (⊂cmd)∊((,'d')'delete'):(h,({⎕←'Deleted' ⋄ (0@(⍎⊃⍵)⊢(≢d)⍴1)/d}args))∇ ⍵ ⍝ deletes element from data
+     (⊂cmd)∊((,'n')'next'):(h,d)∇(({⍵-10|⍵}≢d)⌊⍵+10) ⍝ prevents going beyond available data
+     (⊂cmd)∊((,'p')'prev'):(h,d)∇(1⌈⍵-10) ⍝ prevent negative indicies
+     (⊂cmd)∊((,'r')'reset'):(h,d)∇ 1 ⍝ resets to first 10 elements
+     (⊂cmd)∊((,'g')'goto'):(h,d)∇(1⌈{({⍵-10|⍵}≢d)⌊⍵×10}args) ⍝ allows jumping to desired interval
+     (h,d)∇ ⍵
+ }
+
+cmdargs←1↓2⎕NQ#'GetCommandLineArgs' 
+data←dbLoad cmdargs
+out ← data main 1
+filename←⊃cmdargs
+(⊂out) ⎕NPUT filename 1
