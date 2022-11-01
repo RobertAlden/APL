@@ -1,3 +1,5 @@
+#!/usr/bin/dyalogscript
+
 dbLoad←{
      filename←⊃⍵
      ⎕NEXISTS filename:' '(≠⊆⊢)¨⊃⎕NGET filename 1 ⍝ If it exists, parse and return the data
