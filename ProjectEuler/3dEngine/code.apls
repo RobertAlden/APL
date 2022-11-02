@@ -1,0 +1,53 @@
+ cube←{
+     s←⍵
+     s×0.5-⍨((1 1 1)(1 1 0)(1 1 1)(0 1 1)(0 1 0)(0 1 1)(0 0 1)(0 0 0)(0 0 1)(1 0 1)(1 0 0)(1 0 1)(1 1 1)(1 1 0)(1 0 0)(0 0 0)(0 1 0)(1 1 0))
+ }
+ rot3d←{
+     p←⍵               ⍝ (p)oint being rotated
+     rx ry rz←○⍺÷180   ⍝ axis (r)otations in radians
+     t←0.000001        ⍝ (t)hreshold for rounding errors
+     sin←1∘○ ⍝ Trig Aliases
+     cos←2∘○
+     ⍝ (R)otation Matrix for (x) axis
+     Rx←3 3⍴(1 0 0 0,(cos rx),(-sin rx),0,(sin rx),(cos rx))
+     ⍝ (R)otation Matrix for (y) axis
+     Ry←3 3⍴((cos ry),0,(sin ry),0 1 0,(-sin ry),0,(cos ry))
+     ⍝ (R)otation Matrix for (z) axis
+     Rz←3 3⍴((cos rz),(-sin rz),0,(sin rz),(cos rz),0 0 0 1)
+     o←Rz+.×Ry+.×Rx+.×p ⍝ (o)utput point
+     ⌊@(t>⊢)o    ⍝ clean up rounding errors
+ }
+
+ proj3d←{
+     fov asp zn zf←⍺ ⍝ extents (n)ear (f)ar (l)eft (r)ight (t)op (b)ottom
+     M←4 4⍴0
+     M[1;1]←asp×(÷3○fov÷2)
+     M[2;2]←÷3○fov÷2
+     M[3;3]←zf÷zf-zn
+     M[3;4]←zf((-×⊢)÷-)zn
+     M[4;3]←1
+     v4←M+.×⍵,1
+
+     2↑⍎12 5⍕v4
+ }
+
+ drawing←{
+     p3d←cube 500
+     f←(⊂90 0.6 1 30)
+     p←↑f∘.proj3d p3d
+     ⍺.f←'F'⎕WC'Form' '3D Cube'(5 5)(90 90)
+     ⍺.p←'F.C'⎕WC'Circle'(p)((⊃⍴p)⍴2)('Coord' 'Pixel')
+     ⍺.l←'F.L'⎕WC'Poly'(p)('Coord' 'Pixel')
+     rotate←{
+         _←⎕DL÷60
+         new_p3d←(⊂(360÷60)0(360÷60))∘.rot3d ⍵
+         p←↑f∘.proj3d new_p3d
+         ⍺.p←'F.C'⎕WC'Circle'(p+⍤1⊢800 1600)((⊃⍴p)⍴2)('Coord' 'Pixel')
+         ⍺.l←'F.L'⎕WC'Poly'(p+⍤1⊢800 1600)('Coord' 'Pixel')
+         new_p3d
+     }
+
+     {}⍺ rotate⍣60⊢p3d
+ }
+
+ (⎕ns'')∘drawing 2
