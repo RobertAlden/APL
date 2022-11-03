@@ -39,11 +39,11 @@
      ⍺.p←'F.C'⎕WC'Circle'(p)((⊃⍴p)⍴2)('Coord' 'Pixel')
      ⍺.l←'F.L'⎕WC'Poly'(p)('Coord' 'Pixel')
      rotate←{
-         _←⎕DL÷60
-         new_p3d←(⊂(360÷60)0(360÷60))∘.rot3d ⍵
+         _←⎕DL÷30
+         new_p3d←(⊂(360÷60)(180÷60) 0)∘.rot3d ⍵
          p←↑f∘.proj3d new_p3d
-         ⍺.p←'F.C'⎕WC'Circle'(p+⍤1⊢800 1600)((⊃⍴p)⍴2)('Coord' 'Pixel')
-         ⍺.l←'F.L'⎕WC'Poly'(p+⍤1⊢800 1600)('Coord' 'Pixel')
+         ⍺.p←'F.C'⎕WC'Circle'(p+⍤1⊢400 800)((⊃⍴p)⍴2)('Coord' 'Pixel')
+         ⍺.l←'F.L'⎕WC'Poly'(p+⍤1⊢400 800)('Coord' 'Pixel')
          new_p3d
      }
 
