@@ -24,7 +24,7 @@
  out←10(⍎⍕)o    ⍝ clean up rounding errors
  ∇
 
- ∇  res←l proj3d r;fov;asp;zn;zf;M;v4
+ ∇ res←l proj3d r;fov;asp;zn;zf;M;v4
  fov asp zn zf←l ⍝ extents (n)ear (f)ar (l)eft (r)ight (t)op (b)ottom
  M←4 4⍴0
  M[1;1]←asp×(÷3○fov÷2)
@@ -33,7 +33,7 @@
  M[3;4]←zf((-×⊢)÷-)zn
  M[4;3]←1
  v4←M+.×r,1
- res←2↑10(⍎⍕)v4
+ res←⌽2↑(500 500 0)trans3d 100×3↑v4÷v4[4]
  ∇
 
 ∇ out←t trans3d r
@@ -45,34 +45,74 @@
  out←center trans3d(⊂angle)∘.rot3d(-center)trans3d points
  ∇
 
-∇out←moveForward r
+∇moveForward
  F.p3d←(⊂0 0 50)∘.trans3d F.p3d
- out←1
+∇
+∇moveBack
+ F.p3d←(⊂0 0 ¯50)∘.trans3d F.p3d
+∇
+∇moveLeft
+ F.p3d←(⊂¯50 0 0)∘.trans3d F.p3d
+∇
+∇moveRight
+ F.p3d←(⊂50 0 0)∘.trans3d F.p3d
+∇
+∇moveUp
+ F.p3d←(⊂0 ¯50 0)∘.trans3d F.p3d
+∇
+∇moveDown
+ F.p3d←(⊂0 50 0)∘.trans3d F.p3d
 ∇
 
-∇out←update
- F.p3d←(4×3 0.5 1)rotate F.p3d
- p←↑f∘.proj3d F.p3d
+∇ turnForward
+ F.p3d←(4×1 0 0)rotate F.p3d
+∇
+∇ turnBack
+ F.p3d←(4×¯1 0 0)rotate F.p3d
+∇
+∇ turnLeft
+ F.p3d←(4×0 1 0)rotate F.p3d
+∇
+∇ turnRight
+ F.p3d←(4×0 ¯1 0)rotate F.p3d
+∇
+∇ turnUp
+ F.p3d←(4×0 0 1)rotate F.p3d
+∇
+∇ turnDown
+ F.p3d←(4×0 0 ¯1)rotate F.p3d
+∇
 
+∇ update
+ F.p3d←(0 1 0)rotate F.p3d
+ p←↑f∘.proj3d F.p3d
  'F.C'⎕WS('Points'p)
  'F.L'⎕WS('Points'p)
- out←1
 ∇
 
-∇   main;p3d;scr_x;scr_y;scr_w;scr_h;f;p
+∇ main;p3d;scr_x;scr_y;scr_w;scr_h;f;p
  scr_x scr_y←100 100
  scr_w scr_h←900 900
-
- f←(⊂90(scr_w÷scr_h)1 30)
-
+ f←(⊂100(scr_w÷scr_h)0.1 1000)
  'F'⎕WC'Form' '3D Cube'(scr_x scr_y)(scr_w scr_h)('Coord' 'Pixel')
- F.p3d←(5 cube 10 10 0)
+ F.p3d←(5 cube 0 0 2)
  p←↑f∘.proj3d F.p3d
  'F.C'⎕WC'Circle'(p)((⊃⍴p)⍴2)('Coord' 'Pixel')
  'F.L'⎕WC'Poly'(p)('Coord' 'Pixel')
- 'F.B'⎕WC'Button' 'Forward'(10 10)('Event' 'Select' 'moveForward')
- 'F.T'⎕WC'Timer'('Interval' 16)('Active' 1)('Timer' 'update')
+ 'F.Mf'⎕WC'Button' 'Forward'(50 100)('Event' 'Select' 'moveForward')
+ 'F.Mb'⎕WC'Button' 'Back'(80 100)('Event' 'Select' 'moveBack')
+ 'F.Ml'⎕WC'Button' 'Left'(70 60)('Event' 'Select' 'moveLeft')
+ 'F.Mr'⎕WC'Button' 'Right'(70 180)('Event' 'Select' 'moveRight')
+ 'F.Mu'⎕WC'Button' 'Up'(20 100)('Event' 'Select' 'moveUp')
+ 'F.Md'⎕WC'Button' 'Down'(110 100)('Event' 'Select' 'moveDown')
 
+ 'F.Rf'⎕WC'Button' 'R Z+'(750 100)('Event' 'Select' 'turnForward')
+ 'F.Rb'⎕WC'Button' 'R Z-'(780 100)('Event' 'Select' 'turnBack')
+ 'F.Rl'⎕WC'Button' 'R Y+'(770 60)('Event' 'Select' 'turnLeft')
+ 'F.Rr'⎕WC'Button' 'R Y-'(770 180)('Event' 'Select' 'turnRight')
+ 'F.Ru'⎕WC'Button' 'R X+'(720 100)('Event' 'Select' 'turnUp')
+ 'F.Rd'⎕WC'Button' 'R X-'(810 100)('Event' 'Select' 'turnDown')
+ 'F.T'⎕WC'Timer'('Interval' 16)('Active' 1)('Timer' 'update')
  ⎕DQ'F'
 ∇
 
