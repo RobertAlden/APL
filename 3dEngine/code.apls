@@ -45,22 +45,34 @@
  out←center trans3d(⊂angle)∘.rot3d(-center)trans3d points
  ∇
 
-∇  main;p3d;scr_x;scr_y;scr_w;scr_h;f;p
+∇out←moveForward r
+ F.p3d←(⊂0 0 50)∘.trans3d F.p3d
+ out←1
+∇
+
+∇out←update
+ F.p3d←(4×3 0.5 1)rotate F.p3d
+ p←↑f∘.proj3d F.p3d
+
+ 'F.C'⎕WS('Points'p)
+ 'F.L'⎕WS('Points'p)
+ out←1
+∇
+
+∇   main;p3d;scr_x;scr_y;scr_w;scr_h;f;p
  scr_x scr_y←100 100
  scr_w scr_h←900 900
- p3d←(5 cube 10 10 0)
+
  f←(⊂90(scr_w÷scr_h)1 30)
- p←↑f∘.proj3d p3d
+
  'F'⎕WC'Form' '3D Cube'(scr_x scr_y)(scr_w scr_h)('Coord' 'Pixel')
+ F.p3d←(5 cube 10 10 0)
+ p←↑f∘.proj3d F.p3d
  'F.C'⎕WC'Circle'(p)((⊃⍴p)⍴2)('Coord' 'Pixel')
  'F.L'⎕WC'Poly'(p)('Coord' 'Pixel')
- :While 1
-     ⎕DL÷60
-     p3d←(4×3 0.5 1)rotate p3d
-     p←↑f∘.proj3d p3d
-     'F.C'⎕WS('Points'p)
-     'F.L'⎕WS('Points'p)
- :EndWhile
+ 'F.B'⎕WC'Button' 'Forward'(10 10)('Event' 'Select' 'moveForward')
+ 'F.T'⎕WC'Timer'('Interval' 16)('Active' 1)('Timer' 'update')
+
  ⎕DQ'F'
 ∇
 
