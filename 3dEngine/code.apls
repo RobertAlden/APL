@@ -4,11 +4,11 @@
 
  p←(⊂r)∘.+↓⍉(2⊥⍣¯1⊢)1-⍨⍳8 ⍝ Generates the vertices
 
- F←(⊂1 5 3 7)⌷p
+ F←(⊂3 5 1 7)⌷p
  B←(⊂2 6 4 8)⌷p
- L←(⊂2 1 4 3)⌷p
+ L←(⊂1 2 3 4)⌷p
  R←(⊂6 5 8 7)⌷p
- U←(⊂3 7 4 8)⌷p
+ U←(⊂7 3 8 4)⌷p
  D←(⊂1 5 2 6)⌷p
  ⍝ The tris are triangluar loops, that is, they are 4 elements but the
  ⍝ First and last element are copies, so the lines drawn between them connect
@@ -57,13 +57,11 @@
 
 ∇  l initG r;temp;len
  temp←{⍉2↑⍉↑⍵}¨r ⍝ Drops the z component and prepares for batch line drawing
- len←≢temp
  l ⎕WC'Poly'temp('FStyle'(len⍴0))('FillCol'cols)
 ∇
 
 ∇  l updateG r;temp;len
  temp←⌊⍤1¨{⍉2↑⍉↑⍵}¨r ⍝ Drops the z component and prepares for batch line drawing
- len←≢temp
  ⍝l ⎕WS('Points'(temp))
  l ⎕WC'Poly'temp('FStyle'(len⍴0))('FillCol'cols)
 ∇
