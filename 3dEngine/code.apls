@@ -52,24 +52,59 @@
 ∇
 
 ∇  l turn r
- tris←(⍎l)rot3d tris
+ tris←(5×⍎l)rot3d tris
 ∇
 
 ∇  l initG r;temp;len
  temp←{⍉2↑⍉↑⍵}¨r ⍝ Drops the z component and prepares for batch line drawing
- l ⎕WC'Poly'temp('FStyle'(len⍴0))('FillCol'cols)
+ l ⎕WC'Poly'temp('FStyle'((≢temp)⍴0))('FillCol'cols)
 ∇
 
-∇  l updateG r;temp;len
- temp←⌊⍤1¨{⍉2↑⍉↑⍵}¨r ⍝ Drops the z component and prepares for batch line drawing
- ⍝l ⎕WS('Points'(temp))
- l ⎕WC'Poly'temp('FStyle'(len⍴0))('FillCol'cols)
+∇  l updateG r;temp;len;g
+ g←⊂{⍋∊{(+/÷≢)¯1↑¨⍵}¨⍵}r ⍝ sorts by z component (painters algorithm)
+ temp←⌊⍤1¨{⍉2↑⍉↑⍵}¨{g⌷⍵}r ⍝ Drops the z component and prepares for batch line drawing
+⍝l ⎕WS('Points'(temp))
+ l ⎕WC'Poly'temp('FStyle'((≢temp)⍴0))('FillCol'(g⌷cols))
 ∇
 
-∇update
+∇ update;S;t;map;pixels;colors
  count+←1
  'F.Bitmap'⎕WS('CBits'((⌈sf×scr_w scr_h)⍴(0 0 0)))
  'F.Bitmap.Cube'updateG(sf×scr_w÷2)(sf×scr_h÷2)50 trans3d f proj3d((360|2×count)15 0)rot3d tris
+⍝  S←'F.Bitmap'⎕WG('Size')
+⍝  t←10 trans3d f proj3d((360|2×count)15 0)rot3d tris
+⍝  map←S⍴0
+⍝  pixels←↓⍉¯1↓⍉↑∘⍸(⍳S)∘.pit t
+⍝  colors←{255⊥⊃cols⌷⍨⊃⍋⍵}⍤1⊢pixels∘.zDepth t
+⍝  map[pixels]←colors
+⍝  'F.Bitmap'⎕WS('CBits'(map))
+∇
+
+∇ out←area r;t;a;b;c
+ t←↑r
+ a←(t[2;2]-t[3;2])×t[1;1]
+ b←(t[3;2]-t[1;2])×t[2;1]
+ c←(t[1;2]-t[2;2])×t[3;1]
+ out←|(a+b+c)÷2
+ ∇
+
+ ∇ out←l pit r;t;A;a1;a2;a3
+ t←↑r
+ A←area r
+ a1←area(⊂l),r[2],r[3]
+ a2←area r[1],(⊂l),r[3]
+ a3←area r[1],r[2],(⊂l)
+ out←A=a1+a2+a3
+ ∇
+
+ ∇ out←l zDepth t;p;q;r;a;b;n;k;m
+ p q r←t
+ a←q-p
+ b←r-p
+ n←a((1∘⌽⍤⊣×¯1⌽⊢)-¯1∘⌽⍤⊣×1⌽⊢)b
+ k←(+/n×q)
+ m←(-2↑n)×l
+ out←⊃(k++/m)÷¯1↑n
 ∇
 
 ∇main;scr_x;scr_y;scr_w;scr_h;f;p;count;tris;cols
