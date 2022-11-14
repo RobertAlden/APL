@@ -1,18 +1,13 @@
 ∇  tris←l cube r
  ;p ⍝ (p)oints
  ;F;B;L;R;U;D ⍝ Each describes a face, (F)ront, (B)ack, (L)eft...
-
  p←(⊂r)∘.+↓⍉(2⊥⍣¯1⊢)1-⍨⍳8 ⍝ Generates the vertices
-
  F←(⊂5 1 7 3)⌷p
  B←(⊂2 6 4 8)⌷p
  L←(⊂1 2 3 4)⌷p
  R←(⊂6 5 8 7)⌷p
  U←(⊂7 3 8 4)⌷p
  D←(⊂1 5 2 6)⌷p
- ⍝ The tris are triangluar loops, that is, they are 4 elements but the
- ⍝ First and last element are copies, so the lines drawn between them connect
- ⍝ To form a closed triangular polygon.
  tris←l×10×¯0.5+,↑{(⊂3↑⍵),(⊂1↓⍵)}¨F B L R U D
  ∇
 
@@ -40,7 +35,7 @@
  M[3;3]←zf÷zf-zn
  M[3;4]←zf((-×⊢)÷-)zn
  M[4;3]←1
- res←{{3↑sf×10000×(3↑⍵)÷⍵[4]}¨{M+.×⍵,1}¨⍵}¨r
+ res←sf×1000×{{{¯1↓⍵÷¯1↑⍵}M+.×⍵,1}¨⍵}¨r
  ∇
 
 ∇ out←t trans3d r
@@ -70,70 +65,21 @@
 ∇ update;S;t;map;pixels;colors
  count+←1
  'F.Bitmap'⎕WS('CBits'((⌈sf×scr_w scr_h)⍴(0 0 0)))
- 'F.Bitmap.Cube'updateG(sf×scr_w÷2)(sf×scr_h÷2)50 trans3d f proj3d((360|2×count)(360|1×count) (360|1.5×count))rot3d tris
-⍝  S←'F.Bitmap'⎕WG('Size')
-⍝  t←10 trans3d f proj3d((360|2×count)(360|1×count) (360|1.5×count))rot3d tris
-⍝  map←S⍴0
-⍝  pixels←↓⍉¯1↓⍉↑∘⍸(⍳S)∘.pit t
-⍝  colors←{255⊥⊃cols⌷⍨⊃⍋⍵}⍤1⊢pixels∘.zDepth t
-⍝  map[pixels]←colors
-⍝  'F.Bitmap'⎕WS('CBits'(map))
+ 'F.Bitmap.Cube'updateG(sf×scr_w÷2)(sf×scr_h÷2)50 trans3d f proj3d((360|2×count) 15 0)rot3d tris
 ∇
 
-∇ out←area r;t;a;b;c
- t←↑r
- a←(t[2;2]-t[3;2])×t[1;1]
- b←(t[3;2]-t[1;2])×t[2;1]
- c←(t[1;2]-t[2;2])×t[3;1]
- out←|(a+b+c)÷2
- ∇
-
- ∇ out←l pit r;t;A;a1;a2;a3
- t←↑r
- A←area r
- a1←area(⊂l),r[2],r[3]
- a2←area r[1],(⊂l),r[3]
- a3←area r[1],r[2],(⊂l)
- out←A=a1+a2+a3
- ∇
-
- ∇ out←l zDepth t;p;q;r;a;b;n;k;m
- p q r←t
- a←q-p
- b←r-p
- n←a((1∘⌽⍤⊣×¯1⌽⊢)-¯1∘⌽⍤⊣×1⌽⊢)b
- k←(+/n×q)
- m←(-2↑n)×l
- out←⊃(k++/m)÷¯1↑n
-∇
-
-∇main;scr_x;scr_y;scr_w;scr_h;f;p;count;tris;cols
+∇main;scr_x;scr_y;scr_w;scr_h;f;p;count;tris;cols;sf
  scr_x scr_y←100 100
  scr_w scr_h←1024 1024
  sf←÷2
  count←0
- f←(100(scr_w÷scr_h)0.1 1000)
+ f←(90(scr_w÷scr_h)0.1 1000)
  'F'⎕WC'Form' '3D Cube'(scr_x scr_y)(scr_w scr_h)('Coord' 'Pixel')('OnTop' 1)
  'F.Bitmap'⎕WC'Bitmap'('CBits'((⌈sf×scr_w scr_h)⍴(0 0 0)))
  'F'⎕WS('Picture' 'F.Bitmap' 2)
- tris←(1 cube 0 0 75)
+ tris←(1 cube 0 1 5),(1 cube 0 ¯1 5)
  cols←?(≢tris)⍴(⊂3⍴255)
- 'F.Bitmap.Cube'initG(sf×scr_w÷2)(sf×scr_h÷2)50 trans3d f proj3d(45 45 0)rot3d tris
- 'F.Mf'⎕WC'Button' 'Forward'(50 100)('Event' 'Select' 'move' '0 0 1')
- 'F.Mb'⎕WC'Button' 'Back'(80 100)('Event' 'Select' 'move' '0 0 ¯1')
- 'F.Ml'⎕WC'Button' 'Left'(70 60)('Event' 'Select' 'move' '¯1 0 0')
- 'F.Mr'⎕WC'Button' 'Right'(70 180)('Event' 'Select' 'move' '1 0 0')
- 'F.Mu'⎕WC'Button' 'Up'(20 100)('Event' 'Select' 'move' '0 ¯1 0')
- 'F.Md'⎕WC'Button' 'Down'(110 100)('Event' 'Select' 'move' '0 1 0')
- 'F.Rf'⎕WC'Button' 'R Z+'(750 100)('Event' 'Select' 'turn' '0 0 1')
- 'F.Rb'⎕WC'Button' 'R Z-'(780 100)('Event' 'Select' 'turn' '0 0 ¯1')
- 'F.Rl'⎕WC'Button' 'R X-'(770 60)('Event' 'Select' 'turn' '¯1 0 0')
- 'F.Rr'⎕WC'Button' 'R X+'(770 180)('Event' 'Select' 'turn' '¯1 0 0')
- 'F.Ru'⎕WC'Button' 'R Y+'(720 100)('Event' 'Select' 'turn' '0 1 0')
- 'F.Rd'⎕WC'Button' 'R Y-'(810 100)('Event' 'Select' 'turn' '0 ¯1 0')
  'F.T'⎕WC'Timer'('Interval' 16)('Active' 1)('Timer' 'update')
  ⎕DQ'F'
 ∇
-
 main
-
